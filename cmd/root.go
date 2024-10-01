@@ -8,7 +8,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "emu",
+	Use:   "gone-cli",
 	Short: "Docker based network emulation",
 	Long:  `Network emulation allows you to emulate a network.`,
 	// Uncomment the following line if your bare application
