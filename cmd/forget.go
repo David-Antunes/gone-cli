@@ -31,7 +31,7 @@ var forgetCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		req, err := http.NewRequest("POST", url+"/forget", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", URL+"/forget", bytes.NewBuffer(body))
 		if err != nil {
 			panic(err)
 		}

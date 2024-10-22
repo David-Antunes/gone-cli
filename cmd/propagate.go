@@ -31,7 +31,7 @@ var propagateCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		req, err := http.NewRequest("POST", url+"/propagate", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", URL+"/propagate", bytes.NewBuffer(body))
 		if err != nil {
 			panic(err)
 		}

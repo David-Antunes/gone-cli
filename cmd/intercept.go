@@ -23,7 +23,7 @@ var interceptCmd = &cobra.Command{
 		client := startClient()
 
 		if len(args) == 0 {
-			req, err := http.NewRequest("GET", url+"/listIntercepts", nil)
+			req, err := http.NewRequest("GET", URL+"/listIntercepts", nil)
 			if err != nil {
 				fmt.Println(err)
 				return
@@ -79,7 +79,7 @@ var interceptCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/interceptNode", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/interceptNode", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -88,7 +88,7 @@ var interceptCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/stopInterceptNode", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/stopInterceptNode", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -100,7 +100,7 @@ var interceptCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/interceptBridge", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/interceptBridge", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -110,7 +110,7 @@ var interceptCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/stopInterceptBridge", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/stopInterceptBridge", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -122,7 +122,7 @@ var interceptCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/InterceptRouters", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/InterceptRouters", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -131,7 +131,7 @@ var interceptCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/stopInterceptRouters", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/stopInterceptRouters", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}

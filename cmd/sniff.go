@@ -23,7 +23,7 @@ var sniffCmd = &cobra.Command{
 		client := startClient()
 
 		if len(args) == 0 {
-			req, err := http.NewRequest("GET", url+"/listSniffers", nil)
+			req, err := http.NewRequest("GET", URL+"/listSniffers", nil)
 			if err != nil {
 				fmt.Println(err)
 				return
@@ -76,7 +76,7 @@ var sniffCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/sniffNode", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/sniffNode", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -85,7 +85,7 @@ var sniffCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/stopSniffNode", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/stopSniffNode", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -97,7 +97,7 @@ var sniffCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/sniffBridge", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/sniffBridge", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -107,7 +107,7 @@ var sniffCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/stopSniffBridge", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/stopSniffBridge", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -119,7 +119,7 @@ var sniffCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/sniffRouters", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/sniffRouters", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}
@@ -128,7 +128,7 @@ var sniffCmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
-				req, err = http.NewRequest("POST", url+"/stopSniffRouters", bytes.NewBuffer(body))
+				req, err = http.NewRequest("POST", URL+"/stopSniffRouters", bytes.NewBuffer(body))
 				if err != nil {
 					panic(err)
 				}

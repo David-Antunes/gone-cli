@@ -31,7 +31,7 @@ var routerCmd = &cobra.Command{
 			panic(err)
 		}
 
-		req, err := http.NewRequest("POST", url+"/addRouter", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", URL+"/addRouter", bytes.NewBuffer(body))
 		if err != nil {
 			panic(err)
 		}

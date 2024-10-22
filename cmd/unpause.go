@@ -42,7 +42,7 @@ var unpauseCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		req, err := http.NewRequest("POST", url+"/unpause", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", URL+"/unpause", bytes.NewBuffer(body))
 		if err != nil {
 			panic(err)
 		}

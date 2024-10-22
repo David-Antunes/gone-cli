@@ -73,7 +73,7 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/connectNodeToBridge", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/connectNodeToBridge", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -82,7 +82,7 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/connectBridgeToRouter", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/connectBridgeToRouter", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -91,7 +91,7 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/connectRouterToRouter", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/connectRouterToRouter", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}

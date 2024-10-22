@@ -50,7 +50,7 @@ var disconnectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/disconnectNode", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/disconnectNode", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -60,7 +60,7 @@ var disconnectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/disconnectBridge", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/disconnectBridge", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -70,7 +70,7 @@ var disconnectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/disconnectRouters", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/disconnectRouters", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}

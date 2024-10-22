@@ -38,7 +38,7 @@ var removeCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/removeNode", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/removeNode", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -48,7 +48,7 @@ var removeCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/removeBridge", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/removeBridge", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -58,7 +58,7 @@ var removeCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/removeRouter", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/removeRouter", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}

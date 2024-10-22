@@ -35,7 +35,7 @@ var inspectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/inspectNode", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/inspectNode", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -67,7 +67,7 @@ var inspectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/inspectBridge", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/inspectBridge", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}
@@ -101,7 +101,7 @@ var inspectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			req, err = http.NewRequest("POST", url+"/inspectRouter", bytes.NewBuffer(body))
+			req, err = http.NewRequest("POST", URL+"/inspectRouter", bytes.NewBuffer(body))
 			if err != nil {
 				panic(err)
 			}

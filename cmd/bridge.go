@@ -30,7 +30,7 @@ var bridgeCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		req, err := http.NewRequest("POST", url+"/addBridge", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", URL+"/addBridge", bytes.NewBuffer(body))
 		if err != nil {
 			panic(err)
 		}

@@ -68,7 +68,7 @@ var nodeCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		req, err := http.NewRequest("POST", url+"/addNode", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", URL+"/addNode", bytes.NewBuffer(body))
 		if err != nil {
 			panic(err)
 		}

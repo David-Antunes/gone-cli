@@ -41,7 +41,7 @@ var pauseCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
-		req, err := http.NewRequest("POST", url+"/pause", bytes.NewBuffer(body))
+		req, err := http.NewRequest("POST", URL+"/pause", bytes.NewBuffer(body))
 		if err != nil {
 			panic(err)
 		}
