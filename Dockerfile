@@ -17,6 +17,6 @@ FROM alpinelinux/docker-cli
 
 RUN apk add gcompat
 
-COPY --from=build /cli/gone-cli /gone-cli
+COPY --from=build /cli/gone-cli /usr/bin/gone-cli
 
-CMD ["/gone-cli"]
+CMD ["gone-cli"]
