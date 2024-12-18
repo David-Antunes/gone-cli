@@ -36,4 +36,6 @@ func init() {
 	// when this action is called directly.
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.Root().CompletionOptions.DisableDefaultCmd = true
+	rootCmd.PersistentFlags().Bool("json", false, "Prints json request")
+	rootCmd.PersistentFlags().Bool("curl", false, "Prints curl request")
 }

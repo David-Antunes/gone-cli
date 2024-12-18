@@ -44,9 +44,11 @@ var disconnectCmd = &cobra.Command{
 		client := startClient()
 
 		var req *http.Request
+		var body []byte
+		var err error
 
 		if node {
-			body, err := json.Marshal(&api.DisconnectNodeRequest{Name: firstObject})
+			body, err = json.Marshal(&api.DisconnectNodeRequest{Name: firstObject})
 			if err != nil {
 				panic(err)
 			}
@@ -56,7 +58,7 @@ var disconnectCmd = &cobra.Command{
 			}
 		} else if bridge {
 
-			body, err := json.Marshal(&api.DisconnectBridgeRequest{Name: firstObject})
+			body, err = json.Marshal(&api.DisconnectBridgeRequest{Name: firstObject})
 			if err != nil {
 				panic(err)
 			}
@@ -66,7 +68,7 @@ var disconnectCmd = &cobra.Command{
 			}
 		} else if router {
 
-			body, err := json.Marshal(&api.DisconnectRoutersRequest{First: firstObject, Second: secondObject})
+			body, err = json.Marshal(&api.DisconnectRoutersRequest{First: firstObject, Second: secondObject})
 			if err != nil {
 				panic(err)
 			}
@@ -81,6 +83,7 @@ var disconnectCmd = &cobra.Command{
 
 		req.Header.Add("Content-Type", "application/json")
 
+		jsonOutput(cmd, body, req)
 		res, err := client.Do(req)
 
 		if err != nil {

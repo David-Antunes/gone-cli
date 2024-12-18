@@ -26,7 +26,7 @@ var routerCmd = &cobra.Command{
 			Name:      id,
 			MachineId: machineId,
 		})
-
+		//fmt.Println(string(body))
 		if err != nil {
 			panic(err)
 		}
@@ -37,7 +37,7 @@ var routerCmd = &cobra.Command{
 		}
 
 		req.Header.Add("Content-Type", "application/json")
-
+		jsonOutput(cmd, body, req)
 		res, err := client.Do(req)
 
 		if err != nil {

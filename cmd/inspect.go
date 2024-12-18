@@ -41,6 +41,7 @@ var inspectCmd = &cobra.Command{
 			}
 			req.Header.Add("Content-Type", "application/json")
 
+			jsonOutput(cmd, body, req)
 			res, err := client.Do(req)
 			d := json.NewDecoder(res.Body)
 			resp := api.InspectNodeResponse{}
@@ -73,6 +74,7 @@ var inspectCmd = &cobra.Command{
 			}
 			req.Header.Add("Content-Type", "application/json")
 
+			jsonOutput(cmd, body, req)
 			res, err := client.Do(req)
 			d := json.NewDecoder(res.Body)
 			resp := api.InspectBridgeResponse{}
@@ -107,6 +109,7 @@ var inspectCmd = &cobra.Command{
 			}
 			req.Header.Add("Content-Type", "application/json")
 
+			jsonOutput(cmd, body, req)
 			res, err := client.Do(req)
 
 			d := json.NewDecoder(res.Body)

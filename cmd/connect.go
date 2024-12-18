@@ -77,6 +77,7 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
+			jsonOutput(cmd, body, req)
 		case "bridge":
 			body, err := json.Marshal(&api.ConnectBridgeToRouterRequest{Bridge: from, Router: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
 			if err != nil {
@@ -86,6 +87,7 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
+			jsonOutput(cmd, body, req)
 		case "router":
 			body, err := json.Marshal(&api.ConnectRouterToRouterRequest{From: from, To: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
 			if err != nil {
@@ -95,12 +97,12 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
+			jsonOutput(cmd, body, req)
 		default:
 			panic("Something really went wrong!")
 		}
 
 		req.Header.Add("Content-Type", "application/json")
-
 		res, err := client.Do(req)
 		d := json.NewDecoder(res.Body)
 

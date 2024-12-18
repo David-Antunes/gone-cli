@@ -36,6 +36,7 @@ var bridgeCmd = &cobra.Command{
 		}
 		req.Header.Add("Content-Type", "application/json")
 
+		jsonOutput(cmd, body, req)
 		res, err := client.Do(req)
 
 		if err != nil {

@@ -32,9 +32,11 @@ var removeCmd = &cobra.Command{
 		client := startClient()
 
 		var req *http.Request
+		var body []byte
+		var err error
 
 		if node {
-			body, err := json.Marshal(&api.RemoveNodeRequest{Name: object})
+			body, err = json.Marshal(&api.RemoveNodeRequest{Name: object})
 			if err != nil {
 				panic(err)
 			}
@@ -44,7 +46,7 @@ var removeCmd = &cobra.Command{
 			}
 		} else if bridge {
 
-			body, err := json.Marshal(&api.RemoveBridgeRequest{Name: object})
+			body, err = json.Marshal(&api.RemoveBridgeRequest{Name: object})
 			if err != nil {
 				panic(err)
 			}
@@ -54,7 +56,7 @@ var removeCmd = &cobra.Command{
 			}
 		} else if router {
 
-			body, err := json.Marshal(&api.RemoveRouterRequest{Name: object})
+			body, err = json.Marshal(&api.RemoveRouterRequest{Name: object})
 			if err != nil {
 				panic(err)
 			}
@@ -68,7 +70,7 @@ var removeCmd = &cobra.Command{
 		}
 
 		req.Header.Add("Content-Type", "application/json")
-
+		jsonOutput(cmd, body, req)
 		res, err := client.Do(req)
 
 		if err != nil {

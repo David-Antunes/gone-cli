@@ -37,7 +37,6 @@ var pauseCmd = &cobra.Command{
 			Id:  id,
 			All: all,
 		})
-
 		if err != nil {
 			panic(err)
 		}
@@ -45,8 +44,10 @@ var pauseCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
+
 		req.Header.Add("Content-Type", "application/json")
 
+		jsonOutput(cmd, body, req)
 		res, err := client.Do(req)
 
 		if err != nil {

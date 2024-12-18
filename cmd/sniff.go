@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	api "github.com/David-Antunes/gone/api/Operations"
+	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 	"net/http"
 )
@@ -22,7 +23,28 @@ var sniffCmd = &cobra.Command{
 
 		client := startClient()
 
-		if len(args) == 0 {
+		node, _ := cmd.Flags().GetBool("node")
+
+		bridge, _ := cmd.Flags().GetBool("bridge")
+
+		router, _ := cmd.Flags().GetBool("router")
+
+		stop, _ := cmd.Flags().GetBool("stop")
+
+		id, _ := cmd.Flags().GetString("id")
+
+		if id == "" && !stop {
+			u, err := uuid.NewUUID()
+			if err != nil {
+				panic(err)
+			}
+			id = u.String()
+		} else if id == "" && stop {
+			fmt.Println("Missing id")
+			return
+		}
+
+		if len(args) == 0 && !stop {
 			req, err := http.NewRequest("GET", URL+"/listSniffers", nil)
 			if err != nil {
 				fmt.Println(err)
@@ -47,17 +69,16 @@ var sniffCmd = &cobra.Command{
 				panic(err)
 			}
 			fmt.Println(string(jsonOut))
+			return
 		}
 
-		firstObject := args[0]
+		var firstObject string
+		if len(args) == 0 && stop {
+			firstObject = id
+		} else {
+			firstObject = args[0]
+		}
 		var secondObject string
-		node, _ := cmd.Flags().GetBool("node")
-
-		bridge, _ := cmd.Flags().GetBool("bridge")
-
-		router, _ := cmd.Flags().GetBool("router")
-
-		stop, _ := cmd.Flags().GetBool("stop")
 
 		if router {
 			if len(args) == 2 {
@@ -69,69 +90,55 @@ var sniffCmd = &cobra.Command{
 		}
 
 		var req *http.Request
+		var body []byte
+		var err error
 
 		if node {
-			if !stop {
-				body, err := json.Marshal(&api.SniffNodeRequest{Name: firstObject})
-				if err != nil {
-					panic(err)
-				}
-				req, err = http.NewRequest("POST", URL+"/sniffNode", bytes.NewBuffer(body))
-				if err != nil {
-					panic(err)
-				}
-			} else {
-				body, err := json.Marshal(&api.StopSniffRequest{Id: firstObject})
-				if err != nil {
-					panic(err)
-				}
-				req, err = http.NewRequest("POST", URL+"/stopSniffNode", bytes.NewBuffer(body))
-				if err != nil {
-					panic(err)
-				}
+			body, err = json.Marshal(&api.SniffNodeRequest{
+				Node: firstObject,
+				Id:   id,
+			})
+			if err != nil {
+				panic(err)
+			}
+			req, err = http.NewRequest("POST", URL+"/sniffNode", bytes.NewBuffer(body))
+			if err != nil {
+				panic(err)
 			}
 		} else if bridge {
-			if !stop {
 
-				body, err := json.Marshal(&api.SniffBridgeRequest{Name: firstObject})
-				if err != nil {
-					panic(err)
-				}
-				req, err = http.NewRequest("POST", URL+"/sniffBridge", bytes.NewBuffer(body))
-				if err != nil {
-					panic(err)
-				}
-			} else {
-
-				body, err := json.Marshal(&api.StopSniffRequest{Id: firstObject})
-				if err != nil {
-					panic(err)
-				}
-				req, err = http.NewRequest("POST", URL+"/stopSniffBridge", bytes.NewBuffer(body))
-				if err != nil {
-					panic(err)
-				}
+			body, err = json.Marshal(&api.SniffBridgeRequest{
+				Bridge: firstObject,
+				Id:     id,
+			})
+			if err != nil {
+				panic(err)
+			}
+			req, err = http.NewRequest("POST", URL+"/sniffBridge", bytes.NewBuffer(body))
+			if err != nil {
+				panic(err)
 			}
 		} else if router {
-			if !stop {
-
-				body, err := json.Marshal(&api.SniffRoutersRequest{Router1: firstObject, Router2: secondObject})
-				if err != nil {
-					panic(err)
-				}
-				req, err = http.NewRequest("POST", URL+"/sniffRouters", bytes.NewBuffer(body))
-				if err != nil {
-					panic(err)
-				}
-			} else {
-				body, err := json.Marshal(&api.StopSniffRequest{Id: firstObject})
-				if err != nil {
-					panic(err)
-				}
-				req, err = http.NewRequest("POST", URL+"/stopSniffRouters", bytes.NewBuffer(body))
-				if err != nil {
-					panic(err)
-				}
+			body, err = json.Marshal(&api.SniffRoutersRequest{
+				Router1: firstObject,
+				Router2: secondObject,
+				Id:      id,
+			})
+			if err != nil {
+				panic(err)
+			}
+			req, err = http.NewRequest("POST", URL+"/sniffRouters", bytes.NewBuffer(body))
+			if err != nil {
+				panic(err)
+			}
+		} else if stop {
+			body, err = json.Marshal(&api.StopSniffRequest{Id: firstObject})
+			if err != nil {
+				panic(err)
+			}
+			req, err = http.NewRequest("POST", URL+"/stopSniff", bytes.NewBuffer(body))
+			if err != nil {
+				panic(err)
 			}
 		} else {
 			fmt.Println("Missing -n/-b/-r flag")
@@ -140,6 +147,7 @@ var sniffCmd = &cobra.Command{
 
 		req.Header.Add("Content-Type", "application/json")
 
+		jsonOutput(cmd, body, req)
 		res, err := client.Do(req)
 
 		if err != nil {
@@ -177,5 +185,6 @@ func init() {
 	sniffCmd.Flags().BoolP("bridge", "b", false, "Sniffs bridge traffic")
 	sniffCmd.Flags().BoolP("router", "r", false, "Sniffs traffic between routers")
 	sniffCmd.Flags().BoolP("stop", "s", false, "Stops sniffing")
-	sniffCmd.MarkFlagsMutuallyExclusive("node", "bridge", "router")
+	sniffCmd.Flags().StringP("id", "i", "", "Component Id")
+	sniffCmd.MarkFlagsMutuallyExclusive("node", "bridge", "router", "stop")
 }
