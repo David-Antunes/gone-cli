@@ -4,26 +4,30 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	api "github.com/David-Antunes/gone/api/Connect"
 	"net/http"
 	"strconv"
+
+	api "github.com/David-Antunes/gone/api/Connect"
 
 	"github.com/spf13/cobra"
 )
 
 // connectCmd represents the connect command
 var connectCmd = &cobra.Command{
-	Use:   "connect",
-	Args:  cobra.ExactArgs(3),
-	Short: "Connects to network components together.",
-	Long:  `Connects to network components together in the emulation with the properties defined`,
+	Args:  cobra.ExactArgs(2),
+	Short: "Connects network components together.",
+	Use:   "connect [flags] [-l float | -w string | -d float | -c int | -j float ] {-n | -b | -r} <id> <id>",
+	Example: `
+	gone-cli connect -l 10 -w 100M -r router1 router2 
+	
+Connects router1 to router2 with a delay of 10 ms (5 ms for each direction) 
+with a bandwidth limit of 100Mbits.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		netType := args[0]
-		from := args[1]
-		to := args[2]
+		from := args[0]
+		to := args[1]
 
-		latency, _ := cmd.Flags().GetInt("latency")
+		latency, _ := cmd.Flags().GetFloat64("latency")
 
 		jitter, _ := cmd.Flags().GetFloat64("jitter")
 
@@ -32,6 +36,12 @@ var connectCmd = &cobra.Command{
 		bandwidth, _ := cmd.Flags().GetString("bandwidth")
 
 		weight, _ := cmd.Flags().GetInt("weight")
+
+		node, _ := cmd.Flags().GetBool("node")
+
+		bridge, _ := cmd.Flags().GetBool("bridge")
+
+		router, _ := cmd.Flags().GetBool("router")
 
 		bandwidthArr := []rune(bandwidth)
 		multiplier := bandwidthArr[len(bandwidthArr)-1]
@@ -60,16 +70,18 @@ var connectCmd = &cobra.Command{
 			return
 		}
 
-		if weight == -1 {
-			weight = bandwidthValue
-		}
+		// if weight == -1 {
+		// 	weight = bandwidthValue
+		// }
 
 		client := startClient()
 
 		var req *http.Request
-		switch netType {
-		case "node":
-			body, err := json.Marshal(&api.ConnectNodeToBridgeRequest{Node: from, Bridge: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
+		var body []byte
+		//		var err error
+
+		if node {
+			body, err = json.Marshal(&api.ConnectNodeToBridgeRequest{Node: from, Bridge: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
 			if err != nil {
 				panic(err)
 			}
@@ -77,9 +89,8 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			jsonOutput(cmd, body, req)
-		case "bridge":
-			body, err := json.Marshal(&api.ConnectBridgeToRouterRequest{Bridge: from, Router: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
+		} else if bridge {
+			body, err = json.Marshal(&api.ConnectBridgeToRouterRequest{Bridge: from, Router: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
 			if err != nil {
 				panic(err)
 			}
@@ -87,9 +98,8 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			jsonOutput(cmd, body, req)
-		case "router":
-			body, err := json.Marshal(&api.ConnectRouterToRouterRequest{From: from, To: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
+		} else if router {
+			body, err = json.Marshal(&api.ConnectRouterToRouterRequest{From: from, To: to, Latency: latency, Jitter: jitter, DropRate: dropRate, Bandwidth: bandwidthValue, Weight: weight})
 			if err != nil {
 				panic(err)
 			}
@@ -97,52 +107,54 @@ var connectCmd = &cobra.Command{
 			if err != nil {
 				panic(err)
 			}
-			jsonOutput(cmd, body, req)
-		default:
+		} else {
 			panic("Something really went wrong!")
 		}
 
 		req.Header.Add("Content-Type", "application/json")
+
+		jsonOutput(cmd, body, req)
+
 		res, err := client.Do(req)
+
+		if err != nil {
+			panic(err)
+		}
+
 		d := json.NewDecoder(res.Body)
 
-		switch netType {
-		case "node":
-			resp := &api.ConnectNodeToBridgeResponse{}
-			err = d.Decode(&resp)
+		var resp any
 
-			if err != nil {
-				panic(err)
-			}
-			prettyPrint(resp)
-
-		case "bridge":
-			resp := &api.ConnectBridgeToRouterResponse{}
-			err = d.Decode(&resp)
-
-			if err != nil {
-				panic(err)
-			}
-			prettyPrint(resp)
-		case "router":
-			resp := &api.ConnectRouterToRouterResponse{}
-			err = d.Decode(&resp)
-
-			if err != nil {
-				panic(err)
-			}
-			prettyPrint(resp)
-		default:
-			panic("Something really went wrong!")
+		if node {
+			resp = api.ConnectNodeToBridgeResponse{}
+		} else if bridge {
+			resp = api.ConnectBridgeToRouterResponse{}
+		} else if router {
+			resp = api.ConnectRouterToRouterResponse{}
+		} else {
+			return
 		}
+
+		err = d.Decode(&resp)
+
+		if err != nil {
+			panic(err)
+		}
+		prettyPrint(resp)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(connectCmd)
-	connectCmd.Flags().IntP("latency", "l", 0, "Configures link latency")
-	connectCmd.Flags().Float64P("jitter", "j", 0.0, "Configures link jitter")
-	connectCmd.Flags().StringP("bandwidth", "b", "1M", "Configures link bandwidth")
-	connectCmd.Flags().Float64P("dropRate", "d", 0.0, "Configures link drop rate")
-	connectCmd.Flags().IntP("weight", "w", -1, "Configures link weight")
+	connectCmd.Flags().Float64P("latency", "l", 0.0, "Configures link latency (ms)")
+	connectCmd.Flags().Float64P("jitter", "j", 0.0, "Configures link jitter (ms)")
+	connectCmd.Flags().Float64P("dropRate", "d", 0.0, "Configures link drop rate (Between 0.0 and 1.0)")
+	connectCmd.Flags().StringP("bandwidth", "w", "10M", "Configures link bandwidth (Accepts 10K 10M or 10G)")
+	connectCmd.Flags().IntP("cost", "c", 100, "Configures link weight")
+
+	connectCmd.Flags().BoolP("node", "n", false, "Connects a node to a bridge")
+	connectCmd.Flags().BoolP("bridge", "b", false, "Connects a bridge to a router")
+	connectCmd.Flags().BoolP("router", "r", false, "Connects two routers")
+	connectCmd.MarkFlagsMutuallyExclusive("node", "bridge", "router")
+
 }

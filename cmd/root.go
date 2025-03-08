@@ -37,5 +37,7 @@ func init() {
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.Root().CompletionOptions.DisableDefaultCmd = true
 	rootCmd.PersistentFlags().Bool("json", false, "Prints json request")
+	rootCmd.PersistentFlags().Bool("dry-run", false, "Does not make request. Useful for generating json request or curl request.")
 	rootCmd.PersistentFlags().Bool("curl", false, "Prints curl request")
+	rootCmd.PersistentFlags().Bool("quiet", false, "Supresses the sucessfull Response")
 }

@@ -12,15 +12,19 @@ import (
 
 // nodeCmd represents the node command
 var nodeCmd = &cobra.Command{
-	Use:   "node",
-	Short: "Manages nodes in the network emulation",
-	Long:  `Node command starts a container in the emulation`,
+	Use: "node [flags] [-m machineId] -- <docker command>",
+	Example: `
+	gone-cli node -m machine1 -- docker run -d --network gone_net --name ubuntu1 ubuntu sleep 10000 
+
+Adds the container to the emulation in the instance machine1. The docker command
+requires the -d and --network gone_net to sucessfully execute.`,
+	Short: "Adds node to the network emulation",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			fmt.Println("Missing docker command")
 			return
 		}
-		fmt.Println(args)
+		// fmt.Println(args)
 		// dockerCmd := ""
 		// envVar := false
 		// for _, arg := range args {

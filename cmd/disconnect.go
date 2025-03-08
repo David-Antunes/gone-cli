@@ -7,17 +7,25 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	api "github.com/David-Antunes/gone/api/Disconnect"
 	"github.com/spf13/cobra"
-	"net/http"
 )
 
 // disconnectCmd represents the disconnect command
 var disconnectCmd = &cobra.Command{
-	Use:   "disconnect",
 	Short: "Disconnects components from the emulation",
-	Long:  ``,
-	Args:  cobra.MaximumNArgs(2),
+	Use:   "disconnect [flags] {-n | -b | -r} <id> [<id>]",
+	Example: `
+	gone-cli disconnect -n node1
+
+Disconnects node1 from the bridge it is connected to
+
+	gone-cli disconnect -r router1 router2
+
+Disconnects router1 and router2`,
+	Args: cobra.MaximumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if len(args) == 0 {
@@ -87,7 +95,6 @@ var disconnectCmd = &cobra.Command{
 		res, err := client.Do(req)
 
 		if err != nil {
-			fmt.Println(err)
 			panic(err)
 		}
 
@@ -115,8 +122,8 @@ var disconnectCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(disconnectCmd)
 
-	disconnectCmd.Flags().BoolP("node", "n", false, "Disconnects node")
-	disconnectCmd.Flags().BoolP("bridge", "b", false, "Disconnects bridge")
-	disconnectCmd.Flags().BoolP("router", "r", false, "Disconnects router")
+	disconnectCmd.Flags().BoolP("node", "n", false, "Disconnects node from its bridge")
+	disconnectCmd.Flags().BoolP("bridge", "b", false, "Disconnects bridge from its router")
+	disconnectCmd.Flags().BoolP("router", "r", false, "Disconnects routers")
 	disconnectCmd.MarkFlagsMutuallyExclusive("node", "bridge", "router")
 }

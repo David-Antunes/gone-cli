@@ -7,15 +7,24 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	api "github.com/David-Antunes/gone/api/Remove"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Remove"
 
 	"github.com/spf13/cobra"
 )
 
 // removeCmd represents the remove command
 var removeCmd = &cobra.Command{
-	Use:   "remove",
+	Use: "remove [flags] {-n | -b | -r} <id>",
+	Example: `
+	gone-cli remove -n node1
+
+Removes node1 from emulation
+	
+	gone-cli remove -r router1
+
+Removes router1 from emulation`,
 	Args:  cobra.ExactArgs(1),
 	Short: "Removes a component from the network emulation",
 	Long:  `Removes a component from the network emulation`,

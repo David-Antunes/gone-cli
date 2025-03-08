@@ -4,13 +4,22 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	api "github.com/David-Antunes/gone/api/Operations"
 	"github.com/spf13/cobra"
-	"net/http"
 )
 
 var networkCmd = &cobra.Command{
-	Use:   "network",
+	Use: "network [flags] [-s] {-b | -r} <id>",
+	Example: `
+	gone-cli network -s -r router1
+
+Stops router1 from routing packets
+
+	gone-cli network -b bridge1
+
+Starts bridge1`,
 	Args:  cobra.ExactArgs(1),
 	Short: "Controls whether a particular bridge or router executes",
 	Run: func(cmd *cobra.Command, args []string) {

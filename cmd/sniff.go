@@ -7,17 +7,34 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	api "github.com/David-Antunes/gone/api/Operations"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
-	"net/http"
 )
 
 // disconnectCmd represents the disconnect command
 var sniffCmd = &cobra.Command{
-	Use:   "sniff",
+	Use: "sniff [flags] {-n | -b | -r | -s} [-i socket-name] <id> {<id>}",
+	Example: `
+	gone-cli sniff -i link1 -n node1 
+
+Sniffs network traffic between node1 and its bridge
+and redirects it to /tmp/link1.sniff
+
+	gone-cli sniff -s -i link1
+
+Stops sniffing of socket link1
+
+	gone-cli sniff -r router1 router2
+
+Sniffs network traffic between router1 and router2
+	
+	gone-cli sniff
+
+Shows the list of active sniff links`,
 	Short: "Sniffs traffic from Link",
-	Long:  ``,
 	Args:  cobra.MaximumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 

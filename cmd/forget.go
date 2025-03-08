@@ -6,15 +6,20 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
-	api "github.com/David-Antunes/gone/api/Operations"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Operations"
 
 	"github.com/spf13/cobra"
 )
 
 // forgetCmd represents the forget command
 var forgetCmd = &cobra.Command{
-	Use:   "forget",
+	Use: "forget [flags] <id>",
+	Example: `
+	gone-cli forget router1
+
+Cleans the routing table of router1`,
 	Short: "Cleans routing rules for a specific router",
 	Long:  ``,
 	Args:  cobra.ExactArgs(1),

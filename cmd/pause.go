@@ -6,17 +6,25 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
-	api "github.com/David-Antunes/gone/api/Operations"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Operations"
 
 	"github.com/spf13/cobra"
 )
 
 // pauseCmd represents the pause command
 var pauseCmd = &cobra.Command{
-	Use:   "pause",
-	Short: "A brief description of your command",
-	Long:  ``,
+	Use: "pause [flags] [-a] <id>",
+	Example: `
+	gone-cli pause node1
+
+Pauses node1's execution
+
+	gone-cli pause -a
+
+Pauses all nodes`,
+	Short: "Pauses a node",
 	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 

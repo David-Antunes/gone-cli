@@ -4,13 +4,27 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	api "github.com/David-Antunes/gone/api/Operations"
 	"github.com/spf13/cobra"
-	"net/http"
 )
 
 var disruptCmd = &cobra.Command{
-	Use:   "disrupt",
+	Use: "disrupt [flags] [-s] {-n | -b | -r} <id> [<id>]",
+	Example: `
+	gone-cli disrupt -n node1
+
+Disrupts the link between node1 and its bridge
+
+	gone-cli disrupt -r router1 router2
+
+Disrupts the connection between router1 and router2
+
+	gone-cli disrupt -s -r router1 router2
+
+Stops disruption between router1 and router2
+`,
 	Args:  cobra.MinimumNArgs(1),
 	Short: "Disrupts network components in the network emulation",
 	Run: func(cmd *cobra.Command, args []string) {

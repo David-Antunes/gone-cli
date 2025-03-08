@@ -7,17 +7,38 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	api "github.com/David-Antunes/gone/api/Operations"
 	"github.com/google/uuid"
 	"github.com/spf13/cobra"
-	"net/http"
 )
 
 // disconnectCmd represents the disconnect command
 var interceptCmd = &cobra.Command{
-	Use:   "intercept",
-	Short: "Intercepts traffic from Link",
-	Long:  ``,
+	Use: "intercept [flags] {-n | -b | -r | -s} [-i socket-name] <id> {<id>}",
+	Example: `
+	gone-cli intercept -i link1 -n node1 
+
+Intercepts network traffic between node1 and its bridge
+and redirects it to /tmp/link1.intercept
+
+	gone-cli intercept -s -i link1
+
+Stops interception of socket link1
+
+	gone-cli intercept -r router1 router2
+
+Intercepts the network traffic from router1 to router2
+
+	gone-cli intercept -x -r router1 router2
+
+Intercepts network traffic from router2 to router1
+
+	gone-cli intercept
+
+Shows the list of active intercept links`,
+	Short: "Intercepts traffic from a given Link",
 	Args:  cobra.MaximumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -182,7 +203,7 @@ func init() {
 	interceptCmd.Flags().BoolP("node", "n", false, "intercepts node traffic")
 	interceptCmd.Flags().BoolP("bridge", "b", false, "intercepts bridge traffic")
 	interceptCmd.Flags().BoolP("router", "r", false, "intercepts traffic between routers")
-	interceptCmd.Flags().BoolP("stop", "s", false, "Stops sniffing")
+	interceptCmd.Flags().BoolP("stop", "s", false, "Stops interception")
 	interceptCmd.Flags().BoolP("receive", "x", true, "intercepts receive traffic")
 	interceptCmd.Flags().StringP("id", "i", "", "Component Id")
 	interceptCmd.MarkFlagsMutuallyExclusive("node", "bridge", "router", "stop")

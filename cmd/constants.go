@@ -3,9 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"os"
+
 	"github.com/spf13/cobra"
 	"moul.io/http2curl/v2"
-	"net/http"
 )
 
 var URL = "http://localhost:3000"
@@ -21,7 +23,9 @@ func prettyPrint(data any) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(jsonOut))
+	if b, _ := rootCmd.Flags().GetBool("quiet"); !b {
+		fmt.Println(string(jsonOut))
+	}
 }
 
 func jsonOutput(cmd *cobra.Command, body []byte, req *http.Request) {
@@ -33,5 +37,9 @@ func jsonOutput(cmd *cobra.Command, body []byte, req *http.Request) {
 	if c, _ := cmd.Flags().GetBool("curl"); c {
 		command, _ := http2curl.GetCurlCommand(req)
 		fmt.Println(command)
+	}
+
+	if b, _ := cmd.Flags().GetBool("dry-run"); b {
+		os.Exit(0)
 	}
 }

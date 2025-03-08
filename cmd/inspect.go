@@ -4,15 +4,21 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	api "github.com/David-Antunes/gone/api/Inspect"
+	"log"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Inspect"
 
 	"github.com/spf13/cobra"
 )
 
 // connectCmd represents the connect command
 var inspectCmd = &cobra.Command{
-	Use:   "inspect",
+	Use: "inspect [flags] {-n | -b | -r} {id}",
+	Example: `
+	gone-cli inspect -n node1
+
+Displays information about node1`,
 	Args:  cobra.ExactArgs(1),
 	Short: "Shows information about the emulation",
 	Long:  `Shows more information about the emulation`,
@@ -43,6 +49,10 @@ var inspectCmd = &cobra.Command{
 
 			jsonOutput(cmd, body, req)
 			res, err := client.Do(req)
+
+			if err != nil {
+				log.Fatal(err)
+			}
 			d := json.NewDecoder(res.Body)
 			resp := api.InspectNodeResponse{}
 

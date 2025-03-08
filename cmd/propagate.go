@@ -6,15 +6,20 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
-	api "github.com/David-Antunes/gone/api/Operations"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Operations"
 
 	"github.com/spf13/cobra"
 )
 
 // propagateCmd represents the propagate command
 var propagateCmd = &cobra.Command{
-	Use:   "propagate",
+	Use: "propagate [flags] <id>",
+	Example: `
+	gone-cli propagate router1
+	
+Propagates router1's routing rules to adjacent routers`,
 	Short: "A brief description of your command",
 	Long:  ``,
 	Args:  cobra.ExactArgs(1),

@@ -3,8 +3,9 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
-	api "github.com/David-Antunes/gone/api/Add"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Add"
 
 	"github.com/spf13/cobra"
 )
@@ -12,10 +13,13 @@ import (
 // routerCmd represents the router command
 
 var routerCmd = &cobra.Command{
-	Use:   "router",
+	Use: "router [flags] [-m machineId] <id>",
+	Example: `
+	gone-cli router -m machine1 router1
+
+Creates router1 in instance machine1`,
 	Args:  cobra.ExactArgs(1),
 	Short: "Adds new router to the network emulation.",
-	Long:  `Adds new router to the network emulation.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		id := args[0]
 

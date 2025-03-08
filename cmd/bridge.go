@@ -4,18 +4,26 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	api "github.com/David-Antunes/gone/api/Add"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Add"
 
 	"github.com/spf13/cobra"
 )
 
 // bridgeCmd represents the bridge command
 var bridgeCmd = &cobra.Command{
-	Use:   "bridge",
+	Use: "bridge [flags] [-m machineId] <id>",
+	Example: `
+	gone-cli bridge bridge1
+
+Creates bridge1 in Leader instance
+
+	gone-cli bridge -m machine1 bridge1
+
+Creates bridge1 in instance machine1`,
 	Args:  cobra.ExactArgs(1),
 	Short: "Adds a bridge to emulation",
-	Long:  `Adds a bridge to emulation"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		id := args[0]
 

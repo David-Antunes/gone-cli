@@ -6,17 +6,25 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
-	api "github.com/David-Antunes/gone/api/Operations"
 	"net/http"
+
+	api "github.com/David-Antunes/gone/api/Operations"
 
 	"github.com/spf13/cobra"
 )
 
 // unpauseCmd represents the unpause command
 var unpauseCmd = &cobra.Command{
-	Use:   "unpause",
-	Short: "A brief description of your command",
-	Long:  ``,
+	Use: "unpause [flags] [-a] <id>",
+	Example: `
+	gone-cli unpause node1
+
+Unpauses node1's execution
+
+	gone-cli unpause -a
+
+Unpauses all nodes`,
+	Short: "Unpauses a node",
 	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
