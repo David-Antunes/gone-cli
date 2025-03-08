@@ -9,8 +9,7 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "gone-cli",
-	Short: "Docker based network emulation",
-	Long:  `Network emulation allows you to emulate a network.`,
+	Short: "CLI tool to interact with GONE",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
