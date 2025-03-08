@@ -19,4 +19,4 @@ RUN apk add gcompat
 
 COPY --from=build /cli/gone-cli /usr/bin/gone-cli
 
-CMD ["gone-cli"]
+Entrypoint ["gone-cli"]

@@ -47,6 +47,50 @@ GONE-CLI by default, sends its requests to localhost. However, the user can chan
 GONE_URL=http://localhost:3000 AGENT_URL=http://localhost:3300 gone-cli 
 ```
 
+## Building the application
+
+To utilize this tool there are two options, binary or a docker image.
+
+For both you have to get the source files.
+
+```bash
+git clone https://github.com/David-Antunes/gone-cli
+```
+
+### Native
+
+To run natively you require [Go tools](https://go.dev/doc/install).
+
+With Go installed, you can either build it or install it.
+
+```bash
+go build
+```
+or
+```bash
+go install
+```
+
+Executing Go build, Go creates a binary.
+
+Executing Go install, Go creates the binary and puts it in $GOPATH/bin folder. To have available in the command-line, don't forget to add $GOPATH to the $PATH variable.
+
+### Docker
+
+To build the image you can execute the following:
+
+```bash
+docker build -t gone-cli .
+```
+
+To execute the CLI inside of a docker container and be able to connect to the network emulator you need to configure the GONE_URL variable to point to the correct IP address. Then you can just run as a cli.
+
+```bash
+docker run -it -e GONE_URL=http://192.168.1.1:3000 gone-cli --help
+```
+
+Don't forget to replace "192.168.1.1" with your own IP address.
+
 ## Commands
 
 At its core, this tool only converts the desired action into the correct HTTP request. In the following sections, we detail the command used, the JSON body, and the equivalent curl request and the response.
