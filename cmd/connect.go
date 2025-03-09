@@ -108,7 +108,8 @@ with a bandwidth limit of 100Mbits.`,
 				panic(err)
 			}
 		} else {
-			panic("Something really went wrong!")
+			fmt.Println("Missing [ -n | -b | -r] flag")
+			return
 		}
 
 		req.Header.Add("Content-Type", "application/json")
