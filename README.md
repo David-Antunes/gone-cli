@@ -75,6 +75,7 @@ Executing Go build, Go creates a binary.
 
 Executing Go install, Go creates the binary and puts it in $GOPATH/bin folder. To have available in the command-line, don't forget to add $GOPATH to the $PATH variable.
 
+
 ### Docker
 
 To build the image you can execute the following:
@@ -90,6 +91,14 @@ docker run -it -e GONE_URL=http://192.168.1.1:3000 gone-cli --help
 ```
 
 Don't forget to replace "192.168.1.1" with your own IP address.
+
+Another alternative is to build the binary by levaraging Docker. To obtain the executable execute the following command in the source folder of the repository.
+
+```bash
+docker run -it --workdir="/app" -v $(pwd):/app golang go build -buildvcs=false
+```
+
+This command mounts the repository inside of the docker image and builds the executable.
 
 ## Commands
 
