@@ -35,7 +35,7 @@ with a bandwidth limit of 100Mbits.`,
 
 		bandwidth, _ := cmd.Flags().GetString("bandwidth")
 
-		weight, _ := cmd.Flags().GetInt("weight")
+		weight, _ := cmd.Flags().GetInt("cost")
 
 		node, _ := cmd.Flags().GetBool("node")
 
