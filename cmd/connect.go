@@ -37,7 +37,9 @@ with a bandwidth limit of 100Mbits.`,
 
 		weight, _ := cmd.Flags().GetInt("cost")
 		
-    propagate, _ := cmd.Flags().GetBool("propagate")
+    propagate, _ :=  cmd.Flags().GetBool("propagate")
+
+    propagate = !propagate
 
 		node, _ := cmd.Flags().GetBool("node")
 
@@ -154,7 +156,7 @@ func init() {
 	connectCmd.Flags().Float64P("dropRate", "d", 0.0, "Configures link drop rate (Between 0.0 and 1.0)")
 	connectCmd.Flags().StringP("bandwidth", "w", "10M", "Configures link bandwidth (Accepts 10K 10M or 10G)")
 	connectCmd.Flags().IntP("cost", "c", 100, "Configures link weight")
-	connectCmd.Flags().BoolP("propagate", "P", true, "Stop propagation when connecting two routers")
+	connectCmd.Flags().BoolP("propagate", "P", false, "Stop propagation when connecting two routers")
 
 	connectCmd.Flags().BoolP("node", "n", false, "Connects a node to a bridge")
 	connectCmd.Flags().BoolP("bridge", "b", false, "Connects a bridge to a router")
